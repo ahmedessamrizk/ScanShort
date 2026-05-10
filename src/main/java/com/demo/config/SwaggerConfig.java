@@ -8,15 +8,23 @@ import io.swagger.v3.oas.models.media.*;
 import io.swagger.v3.oas.models.responses.ApiResponse;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
+import io.swagger.v3.oas.models.servers.Server;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class SwaggerConfig {
 
+    @Value("${app.base-url}")
+    private String baseUrl;
+
     @Bean
     public OpenAPI openAPI() {
         return new OpenAPI()
+                .addServersItem(new Server()
+                        .url(baseUrl)
+                        .description("Current server"))
                 .info(new Info()
                         .title("ScanShort API")
                         .description("A URL shortener API with Redis caching, QR code generation, and analytics")
