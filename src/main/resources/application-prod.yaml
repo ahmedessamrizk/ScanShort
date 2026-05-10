@@ -14,4 +14,4 @@ spring:
         enabled: true
 
 app:
-  base-url: https://your-koyeb-url/
+  base-url: ${DEPLOY_URL}
