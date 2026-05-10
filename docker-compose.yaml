@@ -64,9 +64,9 @@ services:
       - index-net
     restart: on-failure
 
-    volumes:
-      - ./src:/app/src          # your code changes reflect instantly
-      - ./pom.xml:/app/pom.xml
+#    volumes:
+#      - ./src:/app/src          # your code changes reflect instantly
+#      - ./pom.xml:/app/pom.xml
 
 volumes:
   postgres_data:
