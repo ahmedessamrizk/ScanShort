@@ -12,3 +12,6 @@ spring:
 
 app:
   base-url: http://localhost:${APP_PORT}/
+  allowed-origins:
+    - http://localhost:8080
+    - ${FRONTEND_BASEURL}
