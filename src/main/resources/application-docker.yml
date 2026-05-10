@@ -12,4 +12,3 @@ spring:
 
 app:
   base-url: http://localhost:${APP_PORT}/
-#  base-url: https://short.ly/
