@@ -1,0 +1,78 @@
+services:
+  db:
+    image: postgres:17-alpine
+    container_name: index-db
+    env_file:
+      - .env
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "${DB_PORT}:5432"
+    networks:
+      - index-net
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  redis:
+    image: redis:7.4-alpine
+    container_name: index-redis
+    ports:
+      - "${REDIS_PORT}:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - index-net
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  redis-insight:
+    image: redis/redisinsight:latest
+    container_name: redis-insight
+    ports:
+      - "5540:5540"
+    restart: always
+    volumes:
+      - redis-insight:/data
+    networks:
+      - index-net
+
+  app:
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: index-app
+    env_file:
+      - .env
+    ports:
+      - "${APP_PORT}:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - index-net
+    restart: on-failure
+
+    volumes:
+      - ./src:/app/src          # your code changes reflect instantly
+      - ./pom.xml:/app/pom.xml
+
+volumes:
+  postgres_data:
+  redis_data:
+  redis-insight:
+
+networks:
+  index-net:
+    driver: bridge
