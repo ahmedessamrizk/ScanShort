@@ -90,7 +90,12 @@ public class UrlServiceImpl implements UrlService {
         }
 
         //If not exist -> check in database.
-        Url url = getUrlOrThrow(shortCode);
+        Optional<Url> checkUrl = urlRepository.findByShortCode(shortCode);
+        if(checkUrl.isEmpty())
+            return FRONTEND_URL + "/link-not-found";
+
+        Url url = checkUrl.get();
+
         //Exist in db -> check status not expired or disabled
         if(url.getStatus() == UrlStatus.DISABLED)
             return FRONTEND_URL + "/link-" + UrlStatus.DISABLED.toString().toLowerCase();
