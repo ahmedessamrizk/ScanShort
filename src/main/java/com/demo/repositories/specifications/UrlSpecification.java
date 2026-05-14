@@ -21,4 +21,15 @@ public class UrlSpecification {
         };
     }
 
+    public static Specification<Url> hasKeyword(String keyword) {
+        return (root, query, cb) -> {
+            if (keyword == null || keyword.isBlank()) return null;
+            String lowerKeyword = "%" + keyword.toLowerCase() + "%";
+            return cb.or(
+                    cb.like(cb.lower(root.get("baseUrl")), lowerKeyword),
+                    cb.like(cb.lower(root.get("shortCode")), lowerKeyword)
+            );
+        };
+    }
+
 }

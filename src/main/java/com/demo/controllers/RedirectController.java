@@ -1,6 +1,7 @@
 package com.demo.controllers;
 
 import com.demo.annotations.RateLimit;
+import com.demo.entities.enums.UrlStatus;
 import com.demo.services.UrlService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -32,8 +33,13 @@ public class RedirectController {
     @GetMapping("/{shortCode}")
     @RateLimit(maxAttempts = 30, windowSeconds = 60, blockSeconds = 120)
     public ResponseEntity<Void> redirectUrl(@PathVariable String shortCode){
-        String baseUrl = urlService.redirectUrl(shortCode);
-        return ResponseEntity.status(HttpStatus.FOUND).location(URI.create(baseUrl)).build();
+        String response = urlService.redirectUrl(shortCode);
+        if(response.contains(UrlStatus.DISABLED.toString()))
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).location(URI.create(response)).build();
+        if(response.contains(UrlStatus.EXPIRED.toString()))
+            return ResponseEntity.status(HttpStatus.GONE).location(URI.create(response)).build();
+
+        return ResponseEntity.status(HttpStatus.FOUND).location(URI.create(response)).build();
     }
 
 }

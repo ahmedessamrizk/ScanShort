@@ -16,3 +16,4 @@ spring:
 app:
   base-url: ${DEPLOY_URL}
   allowed-origins: ${ALLOWED_ORIGINS}
+  frontend-url: ${FRONTEND_URL}

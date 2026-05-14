@@ -47,6 +47,7 @@ services:
   app:
     environment:
       - SPRING_PROFILES_ACTIVE=docker
+      - TZ=Africa/Cairo
     build:
       context: .
       dockerfile: Dockerfile

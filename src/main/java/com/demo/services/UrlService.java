@@ -8,6 +8,7 @@ import com.demo.dtos.response.UrlListResponse;
 import com.demo.entities.enums.UrlStatus;
 import com.demo.utils.PaginatedResponse;
 import jakarta.validation.constraints.Positive;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
@@ -15,9 +16,13 @@ public interface UrlService {
     UrlCreationResult createUrl(CreateUrlRequest request);
     String redirectUrl(String shortCode);
     UrlDetailsResponse getUrl(UUID id);
-    PaginatedResponse<UrlListResponse> getUrls(UrlStatus status, @Positive Integer page, @Positive Integer size);
+    PaginatedResponse<UrlListResponse> getUrls(String keyword, UrlStatus status, @Positive Integer page, @Positive Integer size);
     void disableUrl(UUID id);
     UrlDetailsResponse expireUrl(UUID id, UpdateUrlRequest request);
+
+    @Transactional
+    void deleteUrl(UUID id);
+
     void enableUrl(UUID id);
     byte[] generateQr(String shortCode);
 }

@@ -20,8 +20,8 @@ public class CacheServiceImpl implements CacheService {
     private final String urlViewsKey = AppConstants.URL_VIEWS_KEY;
 
     @Override
-    public void cacheUrl(String shortCode, String baseUrl, Duration ttl) {
-        redisTemplate.opsForValue().set(urlKey + shortCode, baseUrl, ttl);
+    public void cacheUrl(String shortCode, String value, Duration ttl) {
+        redisTemplate.opsForValue().set(urlKey + shortCode, value, ttl);
     }
 
     @Override
@@ -68,5 +68,10 @@ public class CacheServiceImpl implements CacheService {
             connection.keyCommands().expire(urlKey, ttl.getSeconds());
             return null;
         });
+    }
+
+    @Override
+    public void resetTTL(String shortCode, Duration resetDuration) {
+        redisTemplate.expire(AppConstants.URL_KEY + shortCode, resetDuration);
     }
 }

@@ -4,7 +4,7 @@ import java.time.Duration;
 import java.util.Set;
 
 public interface CacheService {
-    void cacheUrl(String shortCode, String baseUrl, Duration ttl);
+    void cacheUrl(String shortCode, String value, Duration ttl);
     String getCachedUrl(String shortCode);
     void incrementViews(String shortCode);
     void evictUrl(String shortCode);
@@ -14,4 +14,6 @@ public interface CacheService {
     void evictViews(String shortCode);
 
     void incrementViewsAndResetTTL(String shortCode, Duration ttl);
+
+    void resetTTL(String shortCode, Duration resetDuration);
 }

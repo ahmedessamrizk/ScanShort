@@ -75,11 +75,12 @@ public class UrlController {
     })
     @GetMapping
     public ResponseEntity<ApiResponse<PaginatedResponse<UrlListResponse>>> getUrls(
+            @RequestParam(required = false) String keyword,
             @RequestParam(required = false) UrlStatus status,
             @RequestParam(defaultValue = "1") @Positive Integer page,
             @RequestParam(defaultValue = "10") @Positive Integer size
     ){
-        PaginatedResponse<UrlListResponse> response = urlService.getUrls(status, page, size);
+        PaginatedResponse<UrlListResponse> response = urlService.getUrls(keyword, status, page, size);
         return ResponseEntity.ok(ApiResponse.success("Urls are fetched successfully", response));
     }
 
@@ -93,6 +94,18 @@ public class UrlController {
     @PatchMapping("/{id}/disable")
     public ResponseEntity<Void> disableUrl(@PathVariable UUID id){
         urlService.disableUrl(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @Operation(summary = "Delete URL", description = "Delete a url owned by current user")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "204", description = "URL deleted successfully"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "URL not found", ref = "#/components/responses/404"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "429", description = "Too many requests", ref = "#/components/responses/429")
+    })
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteUrl(@PathVariable UUID id){
+        urlService.deleteUrl(id);
         return ResponseEntity.noContent().build();
     }
 
@@ -135,7 +148,6 @@ public class UrlController {
 
         return ResponseEntity.ok()
                 .contentType(MediaType.IMAGE_PNG)
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"qr-" + shortCode + ".png\"")
                 .body(qrImage);
     }
 }

@@ -13,3 +13,4 @@ spring:
 app:
   base-url: http://localhost:${APP_PORT}/
   allowed-origins: ${ALLOWED_ORIGINS}
+  frontend-url: http://localhost:3000/
