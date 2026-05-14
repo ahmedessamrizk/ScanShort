@@ -4,7 +4,7 @@ import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 public record CreateUrlRequest(
   @NotBlank(message = "Base URL is required")
@@ -12,7 +12,7 @@ public record CreateUrlRequest(
   String baseUrl,
 
   @Future(message = "Expiration time must be in the future")
-  LocalDateTime expiresAt,
+  Instant expiresAt,
 
   Boolean allowDuplicate,
 

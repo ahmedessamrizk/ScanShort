@@ -7,7 +7,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -33,26 +33,26 @@ public interface UrlRepository extends JpaRepository<Url, UUID>, JpaSpecificatio
             FROM Url u
             WHERE u.user IS NULL AND u.expiresAt < :now
             """)
-    List<String> findExpiredGuestShortCodes(LocalDateTime now);
+    List<String> findExpiredGuestShortCodes(Instant now);
 
     @Query("""
             SELECT u.shortCode
             FROM Url u
             WHERE u.user IS NOT NULL AND u.expiresAt < :now AND u.status != com.demo.entities.enums.UrlStatus.EXPIRED
             """)
-    List<String> findExpiredUserShortCodes(LocalDateTime now);
+    List<String> findExpiredUserShortCodes(Instant now);
 
     Page<Url> findAll(Specification<Url> spec, Pageable pageable);
 
     @Modifying
     @Transactional
     @Query("DELETE FROM Url u WHERE u.user IS NULL AND u.expiresAt < :now")
-    void deleteExpiredGuestUrls(LocalDateTime now);
+    void deleteExpiredGuestUrls(Instant now);
 
     @Modifying
     @Transactional
     @Query("Update Url u SET u.status = 'EXPIRED' WHERE u.user IS NOT NULL AND u.expiresAt < :now")
-    void markExpiredUserUrls(LocalDateTime now);
+    void markExpiredUserUrls(Instant now);
 
     Optional<Url> findByIdAndUser_Id(UUID id, UUID userId);
 }

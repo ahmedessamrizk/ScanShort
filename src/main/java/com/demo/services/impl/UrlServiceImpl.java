@@ -35,7 +35,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.time.Duration;
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -94,7 +94,7 @@ public class UrlServiceImpl implements UrlService {
         //Exist in db -> check status not expired or disabled
         if(url.getStatus() == UrlStatus.DISABLED)
             return FRONTEND_URL + "/link-" + UrlStatus.DISABLED.toString().toLowerCase();
-        if(url.getStatus() == UrlStatus.EXPIRED || url.getExpiresAt().isBefore(LocalDateTime.now()))
+        if(url.getStatus() == UrlStatus.EXPIRED || url.getExpiresAt().isBefore(Instant.now()))
             return FRONTEND_URL + "/link-" + UrlStatus.EXPIRED.toString().toLowerCase();
 
         //If yes -> update viewCount, cache the baseUrl in db and redirect.
@@ -113,7 +113,7 @@ public class UrlServiceImpl implements UrlService {
         Url fetchUrl = getOwnedUrlOrThrow(id);
 
         //Check expiry
-        if(fetchUrl.getExpiresAt() != null && fetchUrl.getExpiresAt().isBefore(LocalDateTime.now()))
+        if(fetchUrl.getExpiresAt() != null && fetchUrl.getExpiresAt().isBefore(Instant.now()))
             fetchUrl.setStatus(UrlStatus.EXPIRED);
 
         //flush any views exist in cache for this url.
@@ -139,7 +139,7 @@ public class UrlServiceImpl implements UrlService {
 
         //Find expired ones
         List<Url> expiredUrls = pageResult.getContent().stream()
-                .filter(url -> url.getStatus() == UrlStatus.ACTIVE && url.getExpiresAt() != null && url.getExpiresAt().isBefore(LocalDateTime.now())).toList();
+                .filter(url -> url.getStatus() == UrlStatus.ACTIVE && url.getExpiresAt() != null && url.getExpiresAt().isBefore(Instant.now())).toList();
 
         //Batch update expired ones
         if (!expiredUrls.isEmpty()) {
@@ -214,7 +214,7 @@ public class UrlServiceImpl implements UrlService {
             throw new IllegalArgumentException("You can only activate disabled urls");
 
         //If scheduler doesn't work yet.
-        if(url.getExpiresAt().isBefore(LocalDateTime.now())){
+        if(url.getExpiresAt().isBefore(Instant.now())){
             throw new IllegalArgumentException("You can't activate expired url");
         }
 
@@ -270,7 +270,7 @@ public class UrlServiceImpl implements UrlService {
                 .shortCode(code)
                 .baseUrl(request.baseUrl())
                 .baseUrlHash(CodeGenerator.hashValue(request.baseUrl()))
-                .expiresAt(DateTimeUtils.toLocalDateTime(guestUrlExpiration))
+                .expiresAt(DateTimeUtils.toInstant(guestUrlExpiration))
                 .status(UrlStatus.ACTIVE)
                 .build();
         //Save in db
@@ -309,7 +309,7 @@ public class UrlServiceImpl implements UrlService {
         }
 
         //If user provide expiresAt -> use it, Else -> set Default time as guest
-        LocalDateTime expiresAt = request.expiresAt() == null? DateTimeUtils.toLocalDateTime(guestUrlExpiration) :  request.expiresAt();
+        Instant expiresAt = request.expiresAt() == null? DateTimeUtils.toInstant(guestUrlExpiration) :  request.expiresAt();
 
         //Save in db
         User currentUser =  User.builder().id(userId).build();

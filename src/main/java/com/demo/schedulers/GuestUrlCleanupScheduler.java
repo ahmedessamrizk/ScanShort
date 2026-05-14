@@ -8,7 +8,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.List;
 
 @Slf4j
@@ -24,12 +24,12 @@ public class GuestUrlCleanupScheduler {
     public void cleanupExpiredGuestUrls() {
         log.info("Starting guest URL cleanup...");
 
-        List<String> expiredShortCodes = urlRepository.findExpiredGuestShortCodes(LocalDateTime.now());
+        List<String> expiredShortCodes = urlRepository.findExpiredGuestShortCodes(Instant.now());
 
         if (expiredShortCodes.isEmpty()) return;
 
         //Delete from DB
-        urlRepository.deleteExpiredGuestUrls(LocalDateTime.now());
+        urlRepository.deleteExpiredGuestUrls(Instant.now());
 
         //Evict from cache, only reached if DB delete succeeded
         expiredShortCodes.forEach(shortCode -> {

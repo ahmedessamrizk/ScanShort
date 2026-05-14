@@ -3,10 +3,10 @@ package com.demo.dtos.request;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotNull;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 public record UpdateUrlRequest(
         @Future(message = "Expiration time must be in the future")
         @NotNull(message = "Expiration time is required")
-        LocalDateTime expiresAt
+        Instant expiresAt
 ) {}

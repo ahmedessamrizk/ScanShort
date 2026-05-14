@@ -3,7 +3,7 @@ package com.demo.dtos.response;
 import com.demo.entities.enums.UrlStatus;
 import lombok.Builder;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.UUID;
 
 @Builder
@@ -12,7 +12,7 @@ public record UrlDetailsResponse(
      String shortUrl,
      String baseUrl,
      Long numberOfViews,
-     LocalDateTime expiresAt,
-     LocalDateTime createdAt,
+     Instant expiresAt,
+     Instant createdAt,
      UrlStatus status
 ) {}

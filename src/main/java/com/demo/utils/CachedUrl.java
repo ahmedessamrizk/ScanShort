@@ -2,11 +2,11 @@ package com.demo.utils;
 
 import com.demo.entities.Url;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 public record CachedUrl(
         String baseUrl,
-        LocalDateTime expiresAt,
+        Instant expiresAt,
         String userId  // "guest" if no owner
 ) {
     public static CachedUrl from(Url url) {
@@ -21,7 +21,7 @@ public record CachedUrl(
         String[] parts = cached.split("\\|");
         return new CachedUrl(
                 parts[0],
-                LocalDateTime.parse(parts[1]),
+                Instant.parse(parts[1]),
                 parts[2]
         );
     }

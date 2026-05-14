@@ -7,7 +7,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.UUID;
 
 @Getter
@@ -41,17 +41,17 @@ public class Url {
 
     private Long viewCount = 0L;
 
-    private LocalDateTime expiresAt;
+    private Instant expiresAt;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private UrlStatus status = UrlStatus.ACTIVE;
 
     @LastModifiedDate
-    private LocalDateTime updatedAt;
+    private Instant updatedAt;
 
     @CreatedDate //we already applied Auditing
-    private LocalDateTime createdAt;
+    private Instant createdAt;
 
 }
 
