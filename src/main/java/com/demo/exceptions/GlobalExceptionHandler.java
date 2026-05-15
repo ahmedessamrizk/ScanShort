@@ -4,6 +4,7 @@ import com.demo.exceptions.custom.*;
 import io.jsonwebtoken.JwtException;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.ValidationException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -19,6 +20,12 @@ import java.util.List;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<?> handleDataIntegrityViolationException(DataIntegrityViolationException ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(ApiErrorResponse.of("This custom code is already taken", "CONFLICT"));
+    }
+
     @ExceptionHandler(ResourceGoneException.class)
     public ResponseEntity<?> handleResourceGoneException(ResourceGoneException ex) {
         return ResponseEntity.status(HttpStatus.GONE)

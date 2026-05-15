@@ -35,7 +35,7 @@ public class RateLimitAspect {
         //Check IP limit
         boolean isIpAllowed = rateLimitService.isAllowed(
                 "ip:" + ip,
-                effectiveRateLimit.maxAttempts() * 5,
+                effectiveRateLimit.maxAttempts(),
                 effectiveRateLimit.windowSeconds(),
                 effectiveRateLimit.blockSeconds());
 

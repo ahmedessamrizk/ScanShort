@@ -46,7 +46,7 @@ public class UrlController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "429", description = "Too many requests", ref = "#/components/responses/429")
     })
     @PostMapping
-    @RateLimit(maxAttempts = 10, windowSeconds = 60, blockSeconds = 300)
+    @RateLimit(maxAttempts = 5, windowSeconds = 60, blockSeconds = 300)
     public ResponseEntity<ApiResponse<UrlDetailsResponse>> createUrl(@Valid @RequestBody CreateUrlRequest request){
         UrlCreationResult response = this.urlService.createUrl(request);
         return  !response.isNew()?

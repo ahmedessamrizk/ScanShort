@@ -273,7 +273,7 @@ public class UrlServiceImpl implements UrlService {
         //Set expiresAt as 30 days
         Url url = Url.builder()
                 .shortCode(code)
-                .baseUrl(request.baseUrl())
+                .baseUrl(request.baseUrl().strip())
                 .baseUrlHash(CodeGenerator.hashValue(request.baseUrl()))
                 .expiresAt(DateTimeUtils.toInstant(guestUrlExpiration))
                 .status(UrlStatus.ACTIVE)
@@ -286,7 +286,7 @@ public class UrlServiceImpl implements UrlService {
     @Transactional
     private UrlCreationResult createUrlForUser(CreateUrlRequest request){
         UUID userId = SecurityUtils.getCurrentUserId();
-        String hashedBaseUrl = CodeGenerator.hashValue(request.baseUrl());
+        String hashedBaseUrl = CodeGenerator.hashValue(request.baseUrl().strip());
         String code;
 
         if(request.customCode() != null){
@@ -319,7 +319,7 @@ public class UrlServiceImpl implements UrlService {
         //Save in db
         User currentUser =  User.builder().id(userId).build();
         Url url = Url.builder()
-                .baseUrl(request.baseUrl())
+                .baseUrl(request.baseUrl().strip())
                 .baseUrlHash(hashedBaseUrl)
                 .shortCode(code)
                 .user(currentUser)
