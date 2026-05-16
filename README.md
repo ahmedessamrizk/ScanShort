@@ -5,7 +5,7 @@ A Spring Boot REST API for shortening / managing URLs, tracking analytics, and g
 ---
 
 ## 🔗 Quick Links
-
+- Demo Link: [Demo](https://scanshort.netlify.app/)
 - 📚 API Documentation: [Swagger UI](http://localhost:8080/swagger-ui.html) ← _replace with live URL after deployment_
 
 ---
