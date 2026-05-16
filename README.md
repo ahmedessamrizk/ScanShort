@@ -159,7 +159,6 @@ flowchart LR
 |---|---|---|
 | ViewCounterScheduler | Every 5 minutes + on shutdown | Syncs view counts from Redis back to the database to keep analytics up to date |
 | GuestUrlCleanupScheduler | Daily at midnight | Removes expired guest URLs from the database to keep it clean |
-| UrlExpiryScheduler | Daily at midnight | Marks user URLs as expired once their expiry date has passed |
 
 ---
 
