@@ -21,7 +21,7 @@ A Spring Boot REST API for shortening / managing URLs, tracking analytics, and g
 ### Guest
 - Shorten any URL — gets an auto-generated short code
 - Generate QR code for any short URL
-- Link cached for 1 day with **sliding expiration** — TTL resets on every click, so active links stay alive while inactive ones expire naturally
+- Link expires after 1 day of inactivity — every click resets the timer, so popular links never die while forgotten ones clean up automatically
 - Link saved in DB and cleaned up after 30 days automatically
 - No ownership — link can't be managed after creation
 
