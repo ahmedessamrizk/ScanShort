@@ -8,7 +8,7 @@ import java.time.Instant;
 
 public record CreateUrlRequest(
   @NotBlank(message = "Base URL is required")
-  @Pattern(regexp = "^(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})([/\\w .-]*)*/?$", message = "Base URL must be a valid URL")
+  @Pattern(regexp = "^(https?:\\/\\/)([\\w-]+\\.)+[\\w-]+(:\\d+)?(\\/[^\\s]*)?$", message = "Base URL must be a valid URL")
   String baseUrl,
 
   @Future(message = "Expiration time must be in the future")
