@@ -12,7 +12,7 @@ A Spring Boot REST API for shortening / managing URLs, tracking analytics, and g
 
 ## 🗄️ ERD
 
-![ERD](erd-image-link-here) ← _replace with actual ERD image_
+<img width="541" height="351" alt="Url-Shorten ERD drawio" src="https://github.com/user-attachments/assets/fff2f886-8900-49c5-9896-57e6f22f28c9" />
 
 ---
 
